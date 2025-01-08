@@ -1,0 +1,30 @@
+import pandas as pd
+
+data = {
+    'Ano': [2021, 2021, 2021, 2022, 2022, 2022, 2023, 2023, 2023],
+    'Fazenda': ['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'],
+    'Cultura': ['Milho', 'Soja', 'Trigo', 'Milho', 'Soja', 'Trigo', 'Milho', 'Soja', 'Trigo'],
+    'Producao': [100, 150, 200, 120, 180, 160, 130, 170, 190]
+}
+
+df = pd.DataFrame(data)
+
+ano_maximo = df.groupby('Ano')['Producao'].sum().idxmax()
+ano_minimo = df.groupby('Ano')['Producao'].sum().idxmin()
+cultura_maxima = df.groupby('Cultura')['Producao'].sum().idxmax()
+cultura_minima = df.groupby('Cultura')['Producao'].sum().idxmin()
+
+ano_especifico = 2022
+fazenda_maxima = df[df['Ano'] == ano_especifico].loc[df['Producao'].idxmax(), 'Fazenda']
+fazenda_minima = df[df['Ano'] == ano_especifico].loc[df['Producao'].idxmin(), 'Fazenda']
+
+resultado = {
+    'Ano com produção máxima': ano_maximo,
+    'Ano com produção mínima': ano_minimo,
+    'Cultura com maior produção': cultura_maxima,
+    'Cultura com menor produção': cultura_minima,
+    'Fazenda com produção máxima em 2022': fazenda_maxima,
+    'Fazenda com produção mínima em 2022': fazenda_minima
+}
+
+print(resultado)
