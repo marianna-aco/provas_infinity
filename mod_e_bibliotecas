@@ -1,0 +1,82 @@
+class Biblioteca:
+    def __init__(self):
+        self.livros = {}
+        self.usuarios = {}
+
+    def adicionar_livro(self, titulo, autor, copias):
+        self.livros[titulo] = {'autor': autor, 'copias': copias}
+
+    def listar_livros(self):
+        for titulo, info in self.livros.items():
+            print(f"Título: {titulo}, Autor: {info['autor']}, Cópias disponíveis: {info['copias']}")
+
+    def emprestar_livro(self, titulo, usuario):
+        if titulo in self.livros and self.livros[titulo]['copias'] > 0:
+            self.livros[titulo]['copias'] -= 1
+            if usuario not in self.usuarios:
+                self.usuarios[usuario] = []
+            self.usuarios[usuario].append(titulo)
+            print(f"Livro '{titulo}' emprestado a {usuario}.")
+        else:
+            print(f"Livro '{titulo}' não está disponível para empréstimo.")
+
+    def devolver_livro(self, titulo, usuario):
+        if usuario in self.usuarios and titulo in self.usuarios[usuario]:
+            self.livros[titulo]['copias'] += 1
+            self.usuarios[usuario].remove(titulo)
+            print(f"Livro '{titulo}' devolvido por {usuario}.")
+        else:
+            print(f"Usuário {usuario} não possui o livro '{titulo}'.")
+
+    def verificar_disponibilidade(self, titulo):
+        if titulo in self.livros:
+            print(f"Cópias disponíveis do livro '{titulo}': {self.livros[titulo]['copias']}")
+        else:
+            print(f"Livro '{titulo}' não encontrado na biblioteca.")
+
+    def mostrar_livros_emprestados(self, usuario):
+        if usuario in self.usuarios:
+            print(f"Livros emprestados a {usuario}: {', '.join(self.usuarios[usuario])}")
+        else:
+            print(f"Usuário {usuario} não possui livros emprestados.")
+
+biblioteca = Biblioteca()
+
+while True:
+    print("\nMenu:")
+    print("1. Adicionar Livro")
+    print("2. Listar Livros")
+    print("3. Emprestar Livro")
+    print("4. Devolver Livro")
+    print("5. Verificar Disponibilidade")
+    print("6. Mostrar Livros Emprestados")
+    print("7. Sair")
+    
+    opcao = input("Escolha uma opção: ")
+    
+    if opcao == '1':
+        titulo = input("Digite o título do livro: ")
+        autor = input("Digite o autor do livro: ")
+        copias = int(input("Digite o número de cópias: "))
+        biblioteca.adicionar_livro(titulo, autor, copias)
+    elif opcao == '2':
+        biblioteca.listar_livros()
+    elif opcao == '3':
+        titulo = input("Digite o título do livro que deseja emprestar: ")
+        usuario = input("Digite seu nome: ")
+        biblioteca.emprestar_livro(titulo, usuario)
+    elif opcao == '4':
+        titulo = input("Digite o título do livro que deseja devolver: ")
+        usuario = input("Digite seu nome: ")
+        biblioteca.devolver_livro(titulo, usuario)
+    elif opcao == '5':
+        titulo = input("Digite o título do livro que deseja verificar: ")
+        biblioteca.verificar_disponibilidade(titulo)
+    elif opcao == '6':
+        usuario = input("Digite seu nome: ")
+        biblioteca.mostrar_livros_emprestados(usuario)
+    elif opcao == '7':
+        print("Saindo do programa.")
+        break
+    else:
+        print("Opção inválida. Tente novamente.")
