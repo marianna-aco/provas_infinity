@@ -1,0 +1,70 @@
+class Funcionario:
+    def __init__(self, nome, funcao, salario):
+        self.nome = nome
+        self.funcao = funcao
+        self.salario = salario
+
+class Quarto:
+    def __init__(self, numero, preco):
+        self.numero = numero
+        self.preco = preco
+        self.status = 'disponível'
+
+class Reserva:
+    def __init__(self, hospede, dias, quarto):
+        self.hospede = hospede
+        self.dias = dias
+        self.quarto = quarto
+
+class Hotel:
+    def __init__(self):
+        self.funcionarios = []
+        self.quartos = []
+        self.reservas = []
+
+    def adicionar_funcionario(self, nome, funcao, salario):
+        funcionario = Funcionario(nome, funcao, salario)
+        self.funcionarios.append(funcionario)
+
+    def adicionar_quarto(self, numero, preco):
+        quarto = Quarto(numero, preco)
+        self.quartos.append(quarto)
+
+    def reservar_quarto(self, nome_hospede, dias):
+        for quarto in self.quartos:
+            if quarto.status == 'disponível':
+                reserva = Reserva(nome_hospede, dias, quarto)
+                self.reservas.append(reserva)
+                quarto.status = 'ocupado'
+                return quarto.numero
+        return None
+
+    def calcular_conta(self, nome_hospede):
+        for reserva in self.reservas:
+            if reserva.hospede == nome_hospede:
+                return reserva.dias * reserva.quarto.preco
+        return None
+
+    def liberar_quarto(self, nome_hospede):
+        for reserva in self.reservas:
+            if reserva.hospede == nome_hospede:
+                reserva.quarto.status = 'disponível'
+                self.reservas.remove(reserva)
+                return True
+        return False
+
+hotel = Hotel()
+hotel.adicionar_funcionario("João", "Gerente", 5000)
+hotel.adicionar_funcionario("Maria", "Recepcionista", 3000)
+hotel.adicionar_quarto(101, 150)
+hotel.adicionar_quarto(102, 200)
+
+numero_quarto = hotel.reservar_quarto("Carlos", 3)
+if numero_quarto:
+    print(f"Quarto {numero_quarto} reservado para Carlos.")
+    conta = hotel.calcular_conta("Carlos")
+    print(f"Conta total para Carlos: R${conta:.2f}")
+    hotel.liberar_quarto("Carlos")
+    print(f"Quarto {numero_quarto} liberado.")
+else:
+    print("Não há quartos disponíveis.")
