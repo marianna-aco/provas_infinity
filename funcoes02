@@ -1,0 +1,32 @@
+def processador_texto(texto, **kwargs):
+    if 'contar_palavras' in kwargs and kwargs['contar_palavras']:
+        contar_palavras = lambda t: len(t.split())
+        print(f"Número de palavras: {contar_palavras(texto)}")
+    
+    if 'contar_letras' in kwargs and kwargs['contar_letras']:
+        contar_letras = lambda t: sum(c.isalpha() for c in t)
+        print(f"Número de letras: {contar_letras(texto)}")
+    
+    if 'inverter_texto' in kwargs and kwargs['inverter_texto']:
+        inverter_texto = lambda t: t[::-1]
+        texto = inverter_texto(texto)
+        print(f"Texto invertido: {texto}")
+    
+    if 'substituir_palavra' in kwargs:
+        palavra_antiga = kwargs['substituir_palavra']
+        nova_palavra = kwargs['nova_palavra']
+        substituir_palavra = lambda t, p1, p2: t.replace(p1, p2)
+        texto = substituir_palavra(texto, palavra_antiga, nova_palavra)
+        print(f"Texto após substituição: {texto}")
+    
+    return texto
+
+texto_inicial = "Olá, este é um exemplo de texto para o processador de texto."
+resultado = processador_texto(
+    texto_inicial,
+    contar_palavras=True,
+    contar_letras=True,
+    inverter_texto=True,
+    substituir_palavra="texto",
+    nova_palavra="documento"
+)
