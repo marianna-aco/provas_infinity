@@ -1,0 +1,13 @@
+equipes = [
+    ('Equipe A', [10, 20, 30]),
+    ('Equipe B', [15, 25, 35]),
+    ('Equipe C', [20, 30, 40]),
+    ('Equipe D', [5, 15, 25])
+]
+
+medias = [sum(pontuacoes) / len(pontuacoes) for _, pontuacoes in equipes]
+classificacao = sorted(zip([nome for nome, _ in equipes], medias), key=lambda x: x[1], reverse=True)
+
+print("Classificação final:")
+for equipe, media in classificacao:
+    print(f"{equipe}: {media:.2f}")
