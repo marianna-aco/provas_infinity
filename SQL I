@@ -1,0 +1,25 @@
+CREATE TABLE Alunos (
+    numero_matricula INT PRIMARY KEY,
+    nome VARCHAR(100),
+    idade INT,
+    endereco VARCHAR(300)
+);
+
+CREATE TABLE Professores (
+    numero_matricula INT PRIMARY KEY,
+    nome VARCHAR(100),
+    especialidade VARCHAR(100),
+    endereco VARCHAR(300)
+);
+
+CREATE TABLE Turmas (
+    id INT PRIMARY KEY,
+    horario_inicio VARCHAR(5),
+    dia_semana VARCHAR(20)
+);
+
+CREATE TABLE Disciplinas (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    quantidade_aulas INT
+);
