@@ -1,0 +1,95 @@
+class Livro:
+    def __init__(self, titulo, autor, livro_id):
+        self.titulo = titulo
+        self.autor = autor
+        self.livro_id = livro_id
+        self.emprestado = False
+
+    def __str__(self):
+        status = "Disponível" if not self.emprestado else "Emprestado"
+        return f"{self.titulo} por {self.autor} (ID: {self.livro_id}) - {status}"
+
+
+class Membro:
+    def __init__(self, nome, numero_membro):
+        self.nome = nome
+        self.numero_membro = numero_membro
+        self.historico_emprestimos = []
+
+    def __str__(self):
+        return f"Membro: {self.nome} (Número: {self.numero_membro})"
+
+
+class Biblioteca:
+    def __init__(self):
+        self.catalogo_livros = {}
+        self.registro_membros = {}
+
+    def adicionar_livro(self, livro):
+        self.catalogo_livros[livro.livro_id] = livro
+
+    def registrar_membro(self, membro):
+        self.registro_membros[membro.numero_membro] = membro
+
+    def emprestar_livro(self, livro_id, numero_membro):
+        if livro_id in self.catalogo_livros and numero_membro in self.registro_membros:
+            livro = self.catalogo_livros[livro_id]
+            membro = self.registro_membros[numero_membro]
+            if not livro.emprestado:
+                livro.emprestado = True
+                membro.historico_emprestimos.append(livro)
+                print(f"Livro '{livro.titulo}' emprestado para {membro.nome}.")
+            else:
+                print(f"Livro '{livro.titulo}' já está emprestado.")
+        else:
+            print("Livro ou membro não encontrado.")
+
+    def devolver_livro(self, livro_id, numero_membro):
+        if livro_id in self.catalogo_livros and numero_membro in self.registro_membros:
+            livro = self.catalogo_livros[livro_id]
+            membro = self.registro_membros[numero_membro]
+            if livro in membro.historico_emprestimos:
+                livro.emprestado = False
+                membro.historico_emprestimos.remove(livro)
+                print(f"Livro '{livro.titulo}' devolvido por {membro.nome}.")
+            else:
+                print(f"O membro {membro.nome} não possui o livro '{livro.titulo}' emprestado.")
+        else:
+            print("Livro ou membro não encontrado.")
+
+    def pesquisar_livro(self, titulo=None, autor=None, livro_id=None):
+        resultados = []
+        for livro in self.catalogo_livros.values():
+            if (titulo and titulo.lower() in livro.titulo.lower()) or \
+               (autor and autor.lower() in livro.autor.lower()) or \
+               (livro_id and livro.livro_id == livro_id):
+                resultados.append(livro)
+        return resultados
+
+
+if __name__ == "__main__":
+    biblioteca = Biblioteca()
+
+    livro1 = Livro("O Rei Leão", "Disney", 1)
+    livro2 = Livro("A Pequena Sereia", "Disney", 2)
+    livro3 = Livro("Aladdin", "Disney", 3)
+    livro4 = Livro("Frozen: Uma Aventura Congelante", "Disney", 4)
+    livro5 = Livro("Mulan", "Disney", 5)
+
+    biblioteca.adicionar_livro(livro1)
+    biblioteca.adicionar_livro(livro2)
+    biblioteca.adicionar_livro(livro3)
+    biblioteca.adicionar_livro(livro4)
+    biblioteca.adicionar_livro(livro5)
+
+    membro1 = Membro("Alice", 101)
+    membro2 = Membro("Bob", 102)
+
+    biblioteca.registrar_membro(membro1)
+    biblioteca.registrar_membro(membro2)
+
+    biblioteca.emprestar_livro(1, 101)
+    biblioteca.emprestar_livro(2, 102)
+    biblioteca.emprestar_livro(1, 102)
+
+    biblioteca.devolver_livro(1, 101)
